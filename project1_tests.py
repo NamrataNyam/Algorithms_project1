@@ -2,7 +2,8 @@ import sorting as ref_sorting
 import random
 import time
 import matplotlib.pyplot as plt
-import math
+
+
 '''
 The first part of this code will verify functional correctness of all sorting algorithms.
 Then, the code will time 
@@ -21,18 +22,13 @@ sorter[4] = ref_sorting.ShellSort([1000,100,10,1])
 sorter[5] = ref_sorting.BucketSort(1000)
 sorter[6] = ref_sorting.RadixSort()
 
-merge_sort_times = []
-quick_sort_times = []
-insertion_sort_times = []
-shell_sort1_times = []
-shell_sort2_times = []
-bucket_sort_times = []
-radix_sort_times = []
-
 DATA_SIZE = 500
 NUM_EXP = 5
 data = []
-almost_sorted = []
+
+uniformDistributedTimes = [[] for _ in range(7)]
+almostSortedTimes = [[] for _ in range(7)]
+
 for i in range(DATA_SIZE):
     data.append(random.randint(0,1000))
     
@@ -51,31 +47,18 @@ for i in range(len(sorter)):
     sorter[i].sort(data)
     verify(data,test_data,i)
 
-
+# Uniformly Distributed Permutations
 for j in range(NUM_EXP):
     print()
     DATA_SIZE = DATA_SIZE * 2
     print("DATA_SIZE:", DATA_SIZE)
     data = []
-    almost_sorted = []
     for i in range(DATA_SIZE):
         data.append(random.randint(0,1000))
-    
-    # Uniformly distributed data
-    for i in range(DATA_SIZE):
-        almost_sorted.append(i)
-
-    
-    # Almost sorted data
-    pairs = 2*int(math.log(DATA_SIZE,2))
-    for i in range(pairs):
-        idx1 = random.randint(0,DATA_SIZE)
-        idx2 = random.randint(0,DATA_SIZE)
-        temp = almost_sorted[idx1]
-        almost_sorted[idx1] = almost_sorted[idx2]
-        almost_sorted[idx2] = temp
+       
     data_save = data.copy()
     test_data = sorted(data)
+
     for i in range(len(sorter)):
 
         data = data_save.copy()
@@ -83,59 +66,82 @@ for j in range(NUM_EXP):
         sorter[i].sort(data)
         end_time = time.perf_counter()
         sorter[i].time = end_time - start_time
-        if i == 0:
-            merge_sort_times.append(sorter[i].time)
-        elif i == 1:
-            quick_sort_times.append(sorter[i].time)
-        elif i == 2:
-            insertion_sort_times.append(sorter[i].time)
-        elif i == 3:
-            shell_sort1_times.append(sorter[i].time)
-        elif i == 4:
-            shell_sort2_times.append(sorter[i].time)
-        elif i == 5:
-            bucket_sort_times.append(sorter[i].time)
-        elif i == 6:
-            radix_sort_times.append(sorter[i].time)
-    
-    for i in range(len(sorter)):
-        print(names[i], sorter[i].time)
-    
-    # Almost sorted data
-    for i in range(len(sorter)):
 
-        data = almost_sorted.copy()
-        start_time = time.perf_counter()
-        if i != 5:
-            sorter[i].sort(data)
-        else:
-            sorter[i].range = DATA_SIZE
-            sorter[i].sort(data)
-        end_time = time.perf_counter()
-        sorter[i].time = end_time - start_time
-    
-    print()
-    print("Almost Sorted Data: ")
     for i in range(len(sorter)):
+        uniformDistributedTimes[i].append(sorter[i].time)
         print(names[i], sorter[i].time)
 
-print(DATA_SIZE)
 DATA_SIZE=500
 data_sizes = [DATA_SIZE * (2 ** n) for n in range(NUM_EXP)]
-plt.plot(data_sizes, merge_sort_times, label='MergeSort')
-plt.plot(data_sizes, quick_sort_times, label='QuickSort')
-plt.plot(data_sizes, insertion_sort_times, label='InsertionSort')
-plt.plot(data_sizes, shell_sort1_times, label='ShellSort1')
-plt.plot(data_sizes, shell_sort2_times, label='ShellSort2')
-plt.plot(data_sizes, bucket_sort_times, label='BucketSort')
-plt.plot(data_sizes, radix_sort_times, label='RadixSort')
+plt.plot(data_sizes, uniformDistributedTimes[0], label='MergeSort')
+plt.plot(data_sizes, uniformDistributedTimes[1], label='QuickSort')
+plt.plot(data_sizes, uniformDistributedTimes[2], label='InsertionSort')
+plt.plot(data_sizes, uniformDistributedTimes[3], label='ShellSort1')
+plt.plot(data_sizes, uniformDistributedTimes[4], label='ShellSort2')
+plt.plot(data_sizes, uniformDistributedTimes[5], label='BucketSort')
+plt.plot(data_sizes, uniformDistributedTimes[6], label='RadixSort')
 
 # Add labels and title
-plt.xlabel('Data Size')
+plt.xlabel('Data Size (n)')
 plt.ylabel('Time (s)')
 plt.title('Sorting Time Comparison')
 plt.legend()
 plt.show()
+
+# Almost Sorted Data
+DATA_SIZE = 500
+NUM_EXP = 5
+data = []
+
+for j in range(NUM_EXP):
+    print()
+    DATA_SIZE = DATA_SIZE * 2
+    print("DATA_SIZE:", DATA_SIZE)
+    data = []
+    for i in range(DATA_SIZE):
+        data.append(random.randint(0,1000))
+
+    data.sort()
+    i, j = 0, len(data)-1
+
+    while i < j:
+        data[i], data[j] = data[j], data[i]
+        i += 1
+        j -= 1
+
+       
+    data_save = data.copy()
+    test_data = sorted(data)
+
+    for i in range(len(sorter)):
+
+        data = data_save.copy()
+        start_time = time.perf_counter()
+        sorter[i].sort(data)
+        end_time = time.perf_counter()
+        sorter[i].time = end_time - start_time
+
+    for i in range(len(sorter)):
+        almostSortedTimes[i].append(sorter[i].time)
+        print(names[i], sorter[i].time)
+
+DATA_SIZE=500
+data_sizes = [DATA_SIZE * (2 ** n) for n in range(NUM_EXP)]
+plt.plot(data_sizes, almostSortedTimes[0], label='MergeSort')
+plt.plot(data_sizes, almostSortedTimes[1], label='QuickSort')
+plt.plot(data_sizes, almostSortedTimes[2], label='InsertionSort')
+plt.plot(data_sizes, almostSortedTimes[3], label='ShellSort1')
+plt.plot(data_sizes, almostSortedTimes[4], label='ShellSort2')
+plt.plot(data_sizes, almostSortedTimes[5], label='BucketSort')
+plt.plot(data_sizes, almostSortedTimes[6], label='RadixSort')
+
+# Add labels and title
+plt.xlabel('Data Size (n)')
+plt.ylabel('Time (s)')
+plt.title('Sorting Time Comparison')
+plt.legend()
+plt.show()
+
 # Please read all of the following before starting your implementation:
 #
 # Details about Gradescope submission:
