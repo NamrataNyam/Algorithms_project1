@@ -9,7 +9,7 @@ The first part of this code will verify functional correctness of all sorting al
 Then, the code will time 
 '''
 
-random.seed(173)
+random.seed(260)
 
 names = ["MergeSort", "QuickSort", "InsertionSort", "ShellSort1", "ShellSort2", "BucketSort", "RadixSort"]
 
@@ -29,6 +29,12 @@ almost_sorted = []
 
 uniformDistributedTimes = [[] for _ in range(7)]
 almostSortedTimes = [[] for _ in range(7)]
+
+theoriticalTimeTable = [[] for _ in range(7)]
+lastTime = [1 for _ in range(7)]
+
+theoriticalTimeTable2 = [[] for _ in range(7)]
+lastTime2 = [1 for _ in range(7)]
 
 for i in range(DATA_SIZE):
     data.append(random.randint(0,1000))
@@ -87,8 +93,13 @@ for j in range(NUM_EXP):
     print()
     print("Uniformly Distributed Random Data: ")
     for i in range(len(sorter)):
+        theoriticalTimeTable[i].append([DATA_SIZE, sorter[i].time, sorter[i].time / lastTime[i]])
+        lastTime[i] = sorter[i].time
         uniformDistributedTimes[i].append(sorter[i].time)
         print(names[i], sorter[i].time)
+    
+    # print("----------TIME TABLE-------------")
+    # print(theoriticalTimeTable)
 
     # Almost sorted data
     for i in range(len(sorter)):
@@ -106,8 +117,13 @@ for j in range(NUM_EXP):
     print()
     print("Almost Sorted Data: ")
     for i in range(len(sorter)):
+        theoriticalTimeTable2[i].append([DATA_SIZE, sorter[i].time, sorter[i].time / lastTime2[i]])
+        lastTime2[i] = sorter[i].time
         almostSortedTimes[i].append(sorter[i].time)
         print(names[i], sorter[i].time)
+
+    # print("----------TIME TABLE 2-------------")
+    # print(theoriticalTimeTable2)
 
 DATA_SIZE=500
 data_sizes = [DATA_SIZE * (2 ** n) for n in range(NUM_EXP)]
