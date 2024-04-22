@@ -9,7 +9,7 @@ The first part of this code will verify functional correctness of all sorting al
 Then, the code will time 
 '''
 
-random.seed(260)
+random.seed(173)
 
 names = ["MergeSort", "QuickSort", "InsertionSort", "ShellSort1", "ShellSort2", "BucketSort", "RadixSort"]
 
@@ -111,13 +111,13 @@ for j in range(NUM_EXP):
 
 DATA_SIZE=500
 data_sizes = [DATA_SIZE * (2 ** n) for n in range(NUM_EXP)]
-plt.plot(data_sizes, uniformDistributedTimes[0], label='MergeSort')
-plt.plot(data_sizes, uniformDistributedTimes[1], label='QuickSort')
-plt.plot(data_sizes, uniformDistributedTimes[2], label='InsertionSort')
-plt.plot(data_sizes, uniformDistributedTimes[3], label='ShellSort1')
-plt.plot(data_sizes, uniformDistributedTimes[4], label='ShellSort2')
-plt.plot(data_sizes, uniformDistributedTimes[5], label='BucketSort')
-plt.plot(data_sizes, uniformDistributedTimes[6], label='RadixSort')
+plt.loglog(data_sizes, uniformDistributedTimes[0], label='MergeSort')
+plt.loglog(data_sizes, uniformDistributedTimes[1], label='QuickSort')
+plt.loglog(data_sizes, uniformDistributedTimes[2], label='InsertionSort')
+plt.loglog(data_sizes, uniformDistributedTimes[3], label='ShellSort1')
+plt.loglog(data_sizes, uniformDistributedTimes[4], label='ShellSort2')
+plt.loglog(data_sizes, uniformDistributedTimes[5], label='BucketSort')
+plt.loglog(data_sizes, uniformDistributedTimes[6], label='RadixSort')
 
 # Add labels and title
 plt.xlabel('Data Size (n)')
@@ -128,13 +128,13 @@ plt.show()
 
 DATA_SIZE=500
 data_sizes = [DATA_SIZE * (2 ** n) for n in range(NUM_EXP)]
-plt.plot(data_sizes, almostSortedTimes[0], label='MergeSort')
-plt.plot(data_sizes, almostSortedTimes[1], label='QuickSort')
-plt.plot(data_sizes, almostSortedTimes[2], label='InsertionSort')
-plt.plot(data_sizes, almostSortedTimes[3], label='ShellSort1')
-plt.plot(data_sizes, almostSortedTimes[4], label='ShellSort2')
-plt.plot(data_sizes, almostSortedTimes[5], label='BucketSort')
-plt.plot(data_sizes, almostSortedTimes[6], label='RadixSort')
+plt.loglog(data_sizes, almostSortedTimes[0], label='MergeSort')
+plt.loglog(data_sizes, almostSortedTimes[1], label='QuickSort')
+plt.loglog(data_sizes, almostSortedTimes[2], label='InsertionSort')
+plt.loglog(data_sizes, almostSortedTimes[3], label='ShellSort1')
+plt.loglog(data_sizes, almostSortedTimes[4], label='ShellSort2')
+plt.loglog(data_sizes, almostSortedTimes[5], label='BucketSort')
+plt.loglog(data_sizes, almostSortedTimes[6], label='RadixSort')
 
 # Add labels and title
 plt.xlabel('Data Size (n)')
