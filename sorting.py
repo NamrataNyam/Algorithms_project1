@@ -91,6 +91,7 @@ class QuickSort:
 		Sort the list data using QuickSort
 	 	@param list data to be sorted
 		'''
+		rand.shuffle(data)
 		self.sortHelper(data, 0, len(data)-1)
 
 	def sortHelper(self, data, low, high):
