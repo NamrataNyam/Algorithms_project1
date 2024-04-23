@@ -235,7 +235,33 @@ class RadixSort:
 					data[idx] = elem
 					idx += 1
 			iter *= 10
-
+			
+class CustomSort1:
+	def __init__(self):
+		self.time = 0
+	
+	def sort(self, data):
+		rand.shuffle(data)
+		for i in range(1, len(data)):
+			key = data[i]
+			left = 0
+			right = i - 1
+        
+        # Use binary search to find the correct position for the key
+			while left <= right:
+				mid = (left + right) // 2
+				if data[mid] < key:
+					left = mid + 1
+				else:
+					right = mid - 1
+        
+        # Shift elements to the right to make space for the key
+			for j in range(i, left, -1):
+				data[j] = data[j - 1]
+        	
+			data[left] = key
+			#print(data)
+   
 class CustomSort2:
 	def __init__(self):
 		self.time = 0

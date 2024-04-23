@@ -11,9 +11,9 @@ Then, the code will time
 
 random.seed(260)
 
-names = ["MergeSort", "QuickSort", "InsertionSort", "ShellSort1", "ShellSort2", "BucketSort", "RadixSort", "CustomSort"]
+names = ["MergeSort", "QuickSort", "InsertionSort", "ShellSort1", "ShellSort2", "BucketSort", "RadixSort", "CustomSort1","CustomSort2"]
 
-sorter = [None]*8
+sorter = [None]*9
 sorter[0] = ref_sorting.MergeSort()
 sorter[1] = ref_sorting.QuickSort()
 sorter[2] = ref_sorting.InsertionSort()
@@ -21,24 +21,25 @@ sorter[3] = ref_sorting.ShellSort([7,3,1])
 sorter[4] = ref_sorting.ShellSort([1000,100,10,1])
 sorter[5] = ref_sorting.BucketSort(16000)
 sorter[6] = ref_sorting.RadixSort()
-sorter[7] = ref_sorting.CustomSort2()
+sorter[7] = ref_sorting.CustomSort1()
+sorter[8] = ref_sorting.CustomSort2()
 
 DATA_SIZE = 500
 NUM_EXP = 5
 data = []
 almost_sorted = []
 
-uniformDistributedTimes = [[] for _ in range(8)]
-almostSortedTimes = [[] for _ in range(8)]
+uniformDistributedTimes = [[] for _ in range(9)]
+almostSortedTimes = [[] for _ in range(9)]
 
-theoriticalTimeTable = [[] for _ in range(8)]
-lastTime = [1 for _ in range(8)]
+theoriticalTimeTable = [[] for _ in range(9)]
+lastTime = [1 for _ in range(9)]
 
-theoriticalTimeTable2 = [[] for _ in range(8)]
-lastTime2 = [1 for _ in range(8)]
+theoriticalTimeTable2 = [[] for _ in range(9)]
+lastTime2 = [1 for _ in range(9)]
 
-theoriticalTimeTable3 = [[] for _ in range(8)]
-lastTime3 = [1 for _ in range(8)]
+theoriticalTimeTable3 = [[] for _ in range(9)]
+lastTime3 = [1 for _ in range(9)]
 
 def generate_data(size, duplicates_ratio):
     unique_count = int(size * (1 - duplicates_ratio))
@@ -147,7 +148,8 @@ plt.loglog(data_sizes, uniformDistributedTimes[3], label='ShellSort1')
 plt.loglog(data_sizes, uniformDistributedTimes[4], label='ShellSort2')
 plt.loglog(data_sizes, uniformDistributedTimes[5], label='BucketSort')
 plt.loglog(data_sizes, uniformDistributedTimes[6], label='RadixSort')
-plt.loglog(data_sizes, uniformDistributedTimes[7], label='CustomSort2')
+plt.loglog(data_sizes, uniformDistributedTimes[7], label='CustomSort1')
+plt.loglog(data_sizes, uniformDistributedTimes[8], label='CustomSort2')
 
 # Add labels and title
 plt.xlabel('Data Size (n)')
@@ -165,7 +167,8 @@ plt.loglog(data_sizes, almostSortedTimes[3], label='ShellSort1')
 plt.loglog(data_sizes, almostSortedTimes[4], label='ShellSort2')
 plt.loglog(data_sizes, almostSortedTimes[5], label='BucketSort')
 plt.loglog(data_sizes, almostSortedTimes[6], label='RadixSort')
-plt.loglog(data_sizes, almostSortedTimes[7], label='CustomSort2')
+plt.loglog(data_sizes, almostSortedTimes[7], label='CustomSort1')
+plt.loglog(data_sizes, almostSortedTimes[8], label='CustomSort2')
 
 # Add labels and title
 plt.xlabel('Data Size (n)')
