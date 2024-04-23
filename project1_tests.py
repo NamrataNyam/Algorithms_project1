@@ -11,9 +11,9 @@ Then, the code will time
 
 random.seed(260)
 
-names = ["MergeSort", "QuickSort", "InsertionSort", "ShellSort1", "ShellSort2", "BucketSort", "RadixSort"]
+names = ["MergeSort", "QuickSort", "InsertionSort", "ShellSort1", "ShellSort2", "BucketSort", "RadixSort", "CustomSort"]
 
-sorter = [None]*7
+sorter = [None]*8
 sorter[0] = ref_sorting.MergeSort()
 sorter[1] = ref_sorting.QuickSort()
 sorter[2] = ref_sorting.InsertionSort()
@@ -21,20 +21,32 @@ sorter[3] = ref_sorting.ShellSort([7,3,1])
 sorter[4] = ref_sorting.ShellSort([1000,100,10,1])
 sorter[5] = ref_sorting.BucketSort(16000)
 sorter[6] = ref_sorting.RadixSort()
+sorter[7] = ref_sorting.CustomSort2()
 
 DATA_SIZE = 500
 NUM_EXP = 5
 data = []
 almost_sorted = []
 
-uniformDistributedTimes = [[] for _ in range(7)]
-almostSortedTimes = [[] for _ in range(7)]
+uniformDistributedTimes = [[] for _ in range(8)]
+almostSortedTimes = [[] for _ in range(8)]
 
-theoriticalTimeTable = [[] for _ in range(7)]
-lastTime = [1 for _ in range(7)]
+theoriticalTimeTable = [[] for _ in range(8)]
+lastTime = [1 for _ in range(8)]
 
-theoriticalTimeTable2 = [[] for _ in range(7)]
-lastTime2 = [1 for _ in range(7)]
+theoriticalTimeTable2 = [[] for _ in range(8)]
+lastTime2 = [1 for _ in range(8)]
+
+theoriticalTimeTable3 = [[] for _ in range(8)]
+lastTime3 = [1 for _ in range(8)]
+
+def generate_data(size, duplicates_ratio):
+    unique_count = int(size * (1 - duplicates_ratio))
+    unique_elements = list(range(unique_count))
+    duplicated_elements = random.choices(unique_elements, k=size - unique_count)
+    data = unique_elements + duplicated_elements
+    random.shuffle(data)
+    return data
 
 for i in range(DATA_SIZE):
     data.append(random.randint(0,1000))
@@ -73,8 +85,8 @@ for j in range(NUM_EXP):
     pairs = 2*int(math.log(DATA_SIZE,2))
     # print("num pairs:", pairs)
     for i in range(pairs):
-        idx1 = random.randint(0,DATA_SIZE)
-        idx2 = random.randint(0,DATA_SIZE)
+        idx1 = random.randint(0,DATA_SIZE-1)
+        idx2 = random.randint(0,DATA_SIZE-1)
         temp = almost_sorted[idx1]
         almost_sorted[idx1] = almost_sorted[idx2]
         almost_sorted[idx2] = temp
@@ -125,6 +137,7 @@ for j in range(NUM_EXP):
     # print("----------TIME TABLE 2-------------")
     # print(theoriticalTimeTable2)
 
+
 DATA_SIZE=500
 data_sizes = [DATA_SIZE * (2 ** n) for n in range(NUM_EXP)]
 plt.loglog(data_sizes, uniformDistributedTimes[0], label='MergeSort')
@@ -134,6 +147,7 @@ plt.loglog(data_sizes, uniformDistributedTimes[3], label='ShellSort1')
 plt.loglog(data_sizes, uniformDistributedTimes[4], label='ShellSort2')
 plt.loglog(data_sizes, uniformDistributedTimes[5], label='BucketSort')
 plt.loglog(data_sizes, uniformDistributedTimes[6], label='RadixSort')
+plt.loglog(data_sizes, uniformDistributedTimes[7], label='CustomSort2')
 
 # Add labels and title
 plt.xlabel('Data Size (n)')
@@ -151,6 +165,7 @@ plt.loglog(data_sizes, almostSortedTimes[3], label='ShellSort1')
 plt.loglog(data_sizes, almostSortedTimes[4], label='ShellSort2')
 plt.loglog(data_sizes, almostSortedTimes[5], label='BucketSort')
 plt.loglog(data_sizes, almostSortedTimes[6], label='RadixSort')
+plt.loglog(data_sizes, almostSortedTimes[7], label='CustomSort2')
 
 # Add labels and title
 plt.xlabel('Data Size (n)')
