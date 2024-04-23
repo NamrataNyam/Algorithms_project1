@@ -236,6 +236,45 @@ class RadixSort:
 					idx += 1
 			iter *= 10
 
+class CustomSort2:
+	def __init__(self):
+		self.time = 0
+
+	def sort(self, data):
+		rand.shuffle(data)
+		self.sortHelper(data, 0, len(data) - 1)
+
+	def sortHelper(self, data, low, high):
+		if low < high:
+			# Partition the array
+			pivot_index = self.hoare_partition(data, low, high)
+			
+			# Recursively sort the partitions
+			self.sortHelper(data, low, pivot_index)
+			self.sortHelper(data, pivot_index + 1, high)
+
+	def hoare_partition(self, data, low, high):
+		pivot = data[low]
+		i = low - 1
+		j = high + 1
+		
+		while True:
+			# Find element greater than or equal to pivot from the left
+			i += 1
+			while data[i] < pivot:
+				i += 1
+			
+			# Find element less than or equal to pivot from the right
+			j -= 1
+			while data[j] > pivot:
+				j -= 1
+			
+			if i >= j:
+				return j
+			
+			# Swap elements
+			data[i], data[j] = data[j], data[i]
+
 
 
 	# feel free to define new methods in addition to the above
